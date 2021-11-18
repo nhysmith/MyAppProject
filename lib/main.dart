@@ -76,27 +76,32 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      drawer: Drawer(
-        child: ListView(
-          children: [
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.lightBlue,
+      drawer: SafeArea(
+        child: Drawer(
+          child: ListView(
+            children: [
+              Container(
+                height: 65,
+                child: DrawerHeader(
+                    decoration: BoxDecoration(
+                      color: Colors.lightBlue,
+                    ),
+                    child: Text("Menu")),
               ),
-                child: Text("Menu")),
-            ListTile(
-              title: Text("Add"),
-              onTap: _addHabit,
-            ),
-            ListTile(
-              title: Text("View All: List View"),
-              onTap: _viewHabits,
-            ),
-            ListTile(
-              title: Text("View All: Calendar View"),
-              onTap: _calendarView,
-            ),
-          ],
+              ListTile(
+                title: Text("Add"),
+                onTap: _addHabit,
+              ),
+              ListTile(
+                title: Text("View All: List View"),
+                onTap: _viewHabits,
+              ),
+              ListTile(
+                title: Text("View All: Calendar View"),
+                onTap: _calendarView,
+              ),
+            ],
+          ),
         ),
       ),
       appBar: AppBar(

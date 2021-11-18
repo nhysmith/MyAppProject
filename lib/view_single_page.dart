@@ -130,27 +130,32 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      drawer: Drawer(
-        child: ListView(
-          children: [
-            DrawerHeader(
-                decoration: BoxDecoration(
-                  color: Colors.lightBlue,
-                ),
-                child: Text("Menu")),
-            ListTile(
-              title: Text("Add"),
-              onTap: _addHabit,
-            ),
-            ListTile(
-              title: Text("View All: List View"),
-              onTap: _viewHabits,
-            ),
-            ListTile(
-              title: Text("View All: Calendar View"),
-              onTap: _calendarView,
-            ),
-          ],
+      drawer: SafeArea(
+        child: Drawer(
+          child: ListView(
+            children: [
+              Container(
+                height: 65,
+                child: DrawerHeader(
+                    decoration: BoxDecoration(
+                      color: Colors.lightBlue,
+                    ),
+                    child: Text("Menu")),
+              ),
+              ListTile(
+                title: Text("Add"),
+                onTap: _addHabit,
+              ),
+              ListTile(
+                title: Text("View All: List View"),
+                onTap: _viewHabits,
+              ),
+              ListTile(
+                title: Text("View All: Calendar View"),
+                onTap: _calendarView,
+              ),
+            ],
+          ),
         ),
       ),
       appBar: AppBar(
