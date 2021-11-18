@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Habit Tracker Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
 
         primarySwatch: Colors.lightBlue,
@@ -75,6 +76,29 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
 
     return Scaffold(
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.lightBlue,
+              ),
+                child: Text("Menu")),
+            ListTile(
+              title: Text("Add"),
+              onTap: _addHabit,
+            ),
+            ListTile(
+              title: Text("View All: List View"),
+              onTap: _viewHabits,
+            ),
+            ListTile(
+              title: Text("View All: Calendar View"),
+              onTap: _calendarView,
+            ),
+          ],
+        ),
+      ),
       appBar: AppBar(
         title: Text(widget.title),
       ),

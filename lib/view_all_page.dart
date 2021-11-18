@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:habittracker_v3/view_single_page.dart';
 
+import 'add_page.dart';
+import 'calendar_page.dart';
 import 'main.dart';
 
 
@@ -33,6 +35,29 @@ class _ViewAllPageState extends State<ViewAllPage> {
         MaterialPageRoute(builder: (context) => MyHomePage(title: 'Habit Tracker Home Page')));
   }
 
+  void _addHabit() {
+    setState(() {
+    });
+
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const AddPage(title: 'Add Habit')));
+  }
+  void _viewHabits() {
+    setState(() {
+    });
+
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const ViewAllPage(title: 'View All Habits')));
+  }
+
+  void _calendarView() {
+    setState(() {
+    });
+
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const CalendarPage(title: 'Calendar')));
+  }
+
   void _viewHabit(int index) {
     setState(() {
     });
@@ -50,6 +75,29 @@ class _ViewAllPageState extends State<ViewAllPage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            DrawerHeader(
+                decoration: BoxDecoration(
+                  color: Colors.lightBlue,
+                ),
+                child: Text("Menu")),
+            ListTile(
+              title: Text("Add"),
+              onTap: _addHabit,
+            ),
+            ListTile(
+              title: Text("View All: List View"),
+              onTap: _viewHabits,
+            ),
+            ListTile(
+              title: Text("View All: Calendar View"),
+              onTap: _calendarView,
+            ),
+          ],
+        ),
+      ),
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
@@ -61,30 +109,37 @@ class _ViewAllPageState extends State<ViewAllPage> {
         itemCount: taskManager.tasks.length,
       itemBuilder: (BuildContext context, int index)
       {
-        return Container(
-          height: 50,
-          padding: const EdgeInsets.all(10),
-            child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              Container(
-                height: 50,
-                width: 50,
-                //padding: EdgeInsets.only(left: 100, right: 100),
-                decoration: BoxDecoration(
-                    color: taskManager.tasks[index].iconColor,
-                    shape: BoxShape.circle
-                ),
-              ),
-                  Spacer(),
-                  Text(
-                  'Habit: ${taskManager.tasks[index].taskName}',
-                    style: Theme.of(context).textTheme.headline5,
+        return ListTile(
+          onTap:  () => {_viewHabit(index)},
+          title: Container(
+              height: 50,
+              padding: const EdgeInsets.all(10),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  //mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Container(
+                      height: 50,
+                      width: 50,
+                      //padding: EdgeInsets.only(left: 100, right: 100),
+                      decoration: BoxDecoration(
+                          color: taskManager.tasks[index].iconColor,
+                          shape: BoxShape.circle
+                      ),
                     ),
-            SizedBox(width: 20,),
-            ElevatedButton(onPressed: () => {_viewHabit(index)}, child: const Text('View Habit')),
-                            ],
-                      )
+                    //Spacer(),
+                    Text(
+                      '${taskManager.tasks[index].taskName}',
+                      style: Theme.of(context).textTheme.headline6,
+                    ),
+                    //Spacer()
+                    //SizedBox(width: 20,),
+                    //ElevatedButton(onPressed: () => {_viewHabit(index)}, child: const Text('View Habit')),
+                  ],
+                ),
+              )
+          ),
         );
       }
     ),

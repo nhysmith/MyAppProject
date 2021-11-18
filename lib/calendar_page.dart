@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:habittracker_v3/view_all_page.dart';
 import 'package:habittracker_v3/view_single_page.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
+import 'add_page.dart';
 import 'main.dart';
 
 
@@ -42,6 +44,29 @@ class _CalendarPageState extends State<CalendarPage> {
         MaterialPageRoute(builder: (context) => ViewSinglePage(title: 'View Habit')));
   }
 
+  void _addHabit() {
+    setState(() {
+    });
+
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const AddPage(title: 'Add Habit')));
+  }
+  void _viewHabits() {
+    setState(() {
+    });
+
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const ViewAllPage(title: 'View All Habits')));
+  }
+
+  void _calendarView() {
+    setState(() {
+    });
+
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const CalendarPage(title: 'Calendar')));
+  }
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -51,6 +76,29 @@ class _CalendarPageState extends State<CalendarPage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            DrawerHeader(
+                decoration: BoxDecoration(
+                  color: Colors.lightBlue,
+                ),
+                child: Text("Menu")),
+            ListTile(
+              title: Text("Add"),
+              onTap: _addHabit,
+            ),
+            ListTile(
+              title: Text("View All: List View"),
+              onTap: _viewHabits,
+            ),
+            ListTile(
+              title: Text("View All: Calendar View"),
+              onTap: _calendarView,
+            ),
+          ],
+        ),
+      ),
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
