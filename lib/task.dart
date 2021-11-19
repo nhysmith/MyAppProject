@@ -14,8 +14,12 @@ class Task
   //int b = 0;
   Color iconColor = const Color.fromARGB(255,0,0,0);
   Task(this.taskName, this.description, this.iconColor);
-  List<DateTime> log = List<DateTime>.empty(growable: true);
+  //List<DateTime> log = List<DateTime>.empty(growable: true);
+  List<Record> record = List<Record>.empty(growable: true);
+
   //List<Task> tasks = List<Task>.empty(growable: true);
+
+  //late String formattedDate;
 
   void SetData(String _name, String _desc, Color _color, DateTime _created, int _counter, List<DateTime> _log)
   {
@@ -24,7 +28,7 @@ class Task
     iconColor = _color;
     created = _created;
     counter = _counter;
-    log = _log;
+    //log = _log;
   }
 
   //Update counter()
@@ -47,10 +51,10 @@ class Task
   {
     List<String> dates =  List<String>.empty(growable: true);
 
-    log.forEach((element) =>
+    /*log.forEach((element) =>
     {
     dates.add(element.toIso8601String())
-    });
+    });*/
 
     return
     {
@@ -87,4 +91,12 @@ class Task
     _task.SetData(_name, _description, _iconColor, _created, _counter, _log);
     return _task;
   }
+}
+
+class Record
+{
+  DateTime time;
+  String note;
+
+  Record(this.time, this.note);
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:habittracker_v3/task.dart';
 import 'package:habittracker_v3/view_all_page.dart';
 
 import 'add_page.dart';
@@ -28,24 +29,27 @@ class ViewSinglePage extends StatefulWidget {
 
 class _ViewSinglePageState extends State<ViewSinglePage> {
 
-  int _counter = taskManager.currentTask.log.length;
+  int _counter = taskManager.currentTask.record.length;
   String _name = taskManager.currentTask.taskName;
-
-  //String _test = "Test";
+  String note = '';
+  String buttonText = 'Ascending';
+  bool isAscending = true;
 
   void _incrementCounter() {
     setState(() {
       //_counter++;
       DateTime currentDate = DateTime.now();
-      taskManager.currentTask.log.add(currentDate);
+      //taskManager.currentTask.log.add(currentDate);
+      taskManager.currentTask.record.add(Record(currentDate, note));
       //taskManager.currentTask.log.forEach((element) {print(element);});
-      _counter = taskManager.currentTask.log.length;
+      _counter = taskManager.currentTask.record.length;
 
       //taskManager.currentTask.counter++;
       print('update habit counter');
+      print(taskManager.currentTask.iconColor);
       temp.add(Item(
           headerValue: currentDate.toString(),
-          expandedValue: ' ',
+          expandedValue: note,
           current: currentDate,
       ));
       //temp = List<Item>.empty(growable: true);
@@ -57,12 +61,6 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
         ));
       });*/
     });
-    /*Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (BuildContext context) => super.widget));*/
-    //Navigator.push(context,
-    //    MaterialPageRoute(builder: (context) => MyHomePage(title: 'Habit Tracker Home Page')));
   }
 
   void _delete() {
@@ -109,16 +107,43 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
 
   void _setCounter(){
     setState(() {
-      _counter = taskManager.currentTask.log.length;
+      _counter = taskManager.currentTask.record.length;
     });
   }
 
+  void _setButtonText(){
+    setState(() {
+      isAscending = !isAscending;
+
+      if(!isAscending)
+        {
+          buttonText = 'Descending';
+        }
+      else
+        {
+          buttonText = 'Ascending';
+        }
+
+      temp = isAscending ? temp : temp.reversed.toList();
+      print(temp[0].current);
+    });
+  }
   void _setName(){
     setState(() {
       //_counter = taskManager.currentTask.log.length;
       _name = taskManager.currentTask.taskName;
 
     });
+  }
+
+  Color setTextColor()
+  {
+    if(taskManager.currentTask.iconColor.value < Color(0xff6c6866).value)
+      {
+        return Colors.white;
+      }
+
+    return Colors.black;
   }
 
   @override
@@ -138,9 +163,10 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
                 height: 65,
                 child: DrawerHeader(
                     decoration: BoxDecoration(
-                      color: Colors.lightBlue,
+                      color: taskManager.currentTask.iconColor,
                     ),
-                    child: Text("Menu")),
+                    child: Text("Menu", style: TextStyle(color: setTextColor()))),
+
               ),
               ListTile(
                 title: Text("Add"),
@@ -161,7 +187,11 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Text(widget.title, style: TextStyle(color: setTextColor()),),
+        iconTheme: IconThemeData(color: setTextColor()),
+
+        //leading: Ico,
+        backgroundColor: taskManager.currentTask.iconColor,
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
@@ -169,10 +199,6 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
         child: ListView(
           //mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            /*Text(
-              'Habit: ${taskManager.tasks[index].taskName}',
-              style: Theme.of(context).textTheme.headline5,
-            ),*/
            Container(
              margin: const EdgeInsets.only(top: 35),
              alignment: Alignment.topCenter,
@@ -237,6 +263,7 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
                 {
                   //print('Habit Name: $name');
                   taskManager.currentTask.description = description;
+                  note = description;
                 },
                 initialValue: taskManager.currentTask.description,
                 decoration: const InputDecoration(
@@ -247,25 +274,7 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
             ),
 
             const SizedBox(height: 25,),
-            /*Text(
-              'Description: ${taskManager.currentTask.description}',
-              style: Theme.of(context).textTheme.headline6,
-            ),*/
-
-            //const SizedBox(height: 30,),
-            //SizedBox(height: 30,),
-            /*Text(
-              'Number of times completed: ${_counter}',
-              style: Theme.of(context).textTheme.headline6,
-            ),*/
-            /*Text(
-              '${taskManager.currentTask.counter}',
-              style: Theme.of(context).textTheme.headline4,
-            ),*/
             ElevatedButton(onPressed: _incrementCounter, child: Text('Complete Habit')),
-            //ElevatedButton(onPressed: _delete, child: Text('Delete Habit'), style: ElevatedButton.styleFrom(
-              //primary: Colors.redAccent)),
-            //ElevatedButton(onPressed: _delete, child: Text('Delete Habit'), ),
             MyStatelessWidget(),
             /*ListView.builder(
                 padding: const EdgeInsets.only(right: 20),
@@ -289,21 +298,18 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
                   );
                 }
             ),*/
-            //ElevatedButton(onPressed: () => MyStatelessWidget(), child: Text('Delete Habit'), ),
 
-            //ElevatedButton(onPressed: showDialog(context: context, builder: (_) => AlertDialog()), child: Text('Delete Habit'), ),
-            //MyStatefulWidget.callback((p0) { }),
-            MyStatefulWidget.callback(
-                    () =>
+            TextButton.icon(onPressed: _setButtonText,
+                icon: RotatedBox(quarterTurns: 1, child: Icon(Icons.compare_arrows),),
+            label: Text(buttonText)),
+            //child: Text()),
+
+            MyStatefulWidget.callback( () =>
                 {
-                  //print('callback: ${_count}'),
-                  //iconColor.withBlue(_b),
-                  //b = _b,
-                  _setCounter()
+                  _setCounter(),
+                  print(_counter)
                 }
             ),
-
-
           ],
         ),
       ),
@@ -362,6 +368,7 @@ class Item {
   String headerValue;
   bool isExpanded;
   late DateTime current;
+  late String note;
 }
 
 /*List<Item> generateItems(int numberOfItems) {
@@ -374,13 +381,13 @@ class Item {
 }*/
 
 List<Item> generateDate() {
-  print('here');
   temp = List<Item>.empty(growable: true);
-  taskManager.currentTask.log.forEach((element) {
+  taskManager.currentTask.record.forEach((element) {
     temp.add(Item(
-      headerValue: element.toString(),
-      expandedValue: '',
-      current: element,
+      headerValue: element.time.toString(),
+      expandedValue: element.note,
+      current: element.time,
+      //note: element.note
     ));
     print(element);
   });
@@ -405,6 +412,7 @@ class MyStatefulWidget extends StatefulWidget {
 /// This is the private State class that goes with MyStatefulWidget.
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   final List<Item> _data = generateDate();
+  //_data.
 
   @override
   Widget build(BuildContext context) {
@@ -424,38 +432,29 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       },
       children: _data.map<ExpansionPanel>((Item item) {
         return ExpansionPanel(
+          canTapOnHeader: true,
           headerBuilder: (BuildContext context, bool isExpanded) {
-            return ListTile(
+            return Dismissible(key: ValueKey(item),
+              child: ListTile(
               title: Text(item.headerValue),
+            ),
+            background: Container(
+                color: Colors.red,
+            ),
+              onDismissed: (DismissDirection direction) {
+              setState(() {
+                _data.removeWhere((Item currentItem) => item == currentItem);
+                taskManager.currentTask.record.removeWhere((Record currentRecord) => item.current == currentRecord.time);
+                //print('record length'+taskManager.currentTask.record.length.toString());
+                widget._callback();
+              });
+              },
             );
           },
           body: ListTile(
-              title: Text(item.expandedValue),
-              subtitle:
-              const Text('To delete this entry, tap the trash can icon'),
-              trailing: const Icon(Icons.delete),
-              onTap: () {
-                setState(() {
-                  //print(index);
-                  _data.removeWhere((Item currentItem) => item == currentItem);
-                  //deleteLog(item.current)
-                  taskManager.currentTask.log.removeWhere((DateTime currentItem) => item.current == currentItem);
-                  //_setCounter();
-                  //_counter = taskManager.currentTask.log.length;
-                  //print('$_counter');
-                  widget._callback();
-
-                  /*Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (BuildContext context) => super.widget));*/
-                  //add code to delete datetime from log
-                });
-              }),
-          isExpanded: item.isExpanded,
-        );
-      }).toList(),
-    );
+              title: Text(item.expandedValue),),
+          isExpanded: item.isExpanded,);
+      }).toList(),);
   }
 }
 

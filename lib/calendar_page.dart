@@ -26,7 +26,6 @@ class CalendarPage extends StatefulWidget {
 }
 
 class _CalendarPageState extends State<CalendarPage> {
-  int _counter = taskManager.tasks.length;
 
   void _home() {
     setState(() {
@@ -127,7 +126,7 @@ class _CalendarPageState extends State<CalendarPage> {
             //List<Object> appointment = LogDataSource(_getLogDataSource()).getVisibleAppointments(dates[0], calendarTimeZone, dates[details.visibleDates.length - 1]);
           },*/
           dataSource: LogDataSource(_getLogDataSource()),
-          monthViewSettings: MonthViewSettings(
+          monthViewSettings: const MonthViewSettings(
             navigationDirection: MonthNavigationDirection.horizontal,
             appointmentDisplayMode: MonthAppointmentDisplayMode.indicator,
             showAgenda: true,
@@ -145,28 +144,8 @@ class _CalendarPageState extends State<CalendarPage> {
   }
 }
 
-List<TimeRegion> _getTimeRegions() {
-  final List<TimeRegion> regions = <TimeRegion>[];
-  regions.add(TimeRegion(
-      startTime: DateTime.now(),
-      endTime: DateTime.now().add(Duration(days: 10)),
-      color: Colors.grey.withOpacity(0.2),
-      text: 'Break'));
 
-  return regions;
-}
 
-List<Log> _getDataSource() {
-  final List<Log> meetings = <Log>[];
-  final DateTime today = DateTime.now();
-  final DateTime startTime =
-  DateTime(today.year, today.month, today.day, 9, 0, 0);
-  final DateTime endTime = startTime.add(const Duration(hours: 2));
-  meetings.add(
-      Log('Conference', startTime, endTime, const Color(0xFF0F8644)));
-  //_getLogDataSource();
-  return meetings;
-}
 List<Log> _getLogDataSource() {
   //final List<Log> meetings = <Log>[];
   List<Log> log = List<Log>.empty(growable: true);
@@ -177,8 +156,8 @@ List<Log> _getLogDataSource() {
     name = element.taskName;
     print(name);
     color = element.iconColor;
-    element.log.forEach((element) {
-      log.add(Log(name, element,element,color));
+    element.record.forEach((element) {
+      log.add(Log(name, element.time,element.time,color));
     });
   });
   log.forEach((element) {
