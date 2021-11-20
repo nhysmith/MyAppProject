@@ -21,14 +21,14 @@ class Task
 
   //late String formattedDate;
 
-  void SetData(String _name, String _desc, Color _color, DateTime _created, int _counter, List<DateTime> _log)
+  void SetData(String _name, String _desc, Color _color, DateTime _created, int _counter, List<Record> _record)
   {
     taskName = _name;
     description = _name;
     iconColor = _color;
     created = _created;
     counter = _counter;
-    //log = _log;
+    record = _record;
   }
 
   //Update counter()
@@ -49,21 +49,23 @@ class Task
 
   Map toJson()
   {
-    List<String> dates =  List<String>.empty(growable: true);
+    List<Map> _records = this.record.map((i) => i.toJson()).toList();
+  //List<String> dates =  List<String>.empty(growable: true);
 
-    /*log.forEach((element) =>
+  /*log.forEach((element) =>
     {
     dates.add(element.toIso8601String())
     });*/
 
-    return
+  return
     {
     'taskName': taskName,
     'description': description,
     'iconColor': iconColor.toString(),
     'created': created.toIso8601String(),
     'counter': counter.toString(),
-    'log': jsonEncode(dates),
+    'record': _records
+    //'log': jsonEncode(dates),
     };
   }
 
@@ -78,17 +80,19 @@ class Task
     DateTime _created = DateTime.parse(json['created'] as String);
     int _counter = int.parse(json['counter'] as String);
 
-    var _logList = jsonDecode(json['log']);
+    var _recordList = jsonDecode(json['record']);
+    List<Record> _records = _recordList.map((json) => Record.fromJson(json)).toList();
+    /*var _logList = jsonDecode(json['log']);
     List<String> _logString = List.from(_logList);
     List<DateTime> _log = List<DateTime>.empty(growable: true);
 
     _logString.forEach((element) =>
     {
     _log.add(DateTime.parse(element))
-    });
+    });*/
 
     Task _task = Task('','', const Color.fromARGB(255,0,0,0));
-    _task.SetData(_name, _description, _iconColor, _created, _counter, _log);
+    _task.SetData(_name, _description, _iconColor, _created, _counter, _records);
     return _task;
   }
 }
@@ -99,4 +103,23 @@ class Record
   String note;
 
   Record(this.time, this.note);
+
+  Map toJson()
+  {
+    return
+      {
+        'time' : time.toIso8601String(),
+        'note' : note
+      };
+  }
+
+  factory Record.fromJson(dynamic json)
+  {
+    DateTime _time = DateTime.parse(json['time'] as String);
+    String _note = json['note'] as String;
+
+    Record _record = Record(_time, _note);
+
+    return _record;
+  }
 }
