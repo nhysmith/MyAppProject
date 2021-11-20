@@ -5,6 +5,7 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 import 'add_page.dart';
 import 'main.dart';
+import 'my_home_page.dart';
 
 
 class CalendarPage extends StatefulWidget {
@@ -88,6 +89,10 @@ class _CalendarPageState extends State<CalendarPage> {
                     child: Text("Menu")),
               ),
               ListTile(
+                title: Text("Home"),
+                onTap: _home,
+              ),
+              ListTile(
                 title: Text("Add"),
                 onTap: _addHabit,
               ),
@@ -135,11 +140,11 @@ class _CalendarPageState extends State<CalendarPage> {
         ),
       ),
 
-      floatingActionButton: FloatingActionButton(
+      /*floatingActionButton: FloatingActionButton(
         onPressed: _home,
         tooltip: 'Home',
         child: const Icon(Icons.home),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),*/ // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

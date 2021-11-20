@@ -6,6 +6,7 @@ import 'package:habittracker_v3/view_single_page.dart';
 
 import 'calendar_page.dart';
 import 'main.dart';
+import 'my_home_page.dart';
 
 int r = 0;
 int g = 0;
@@ -127,6 +128,10 @@ class _AddPageState extends State<AddPage> {
                       color: Colors.lightBlue,
                     ),
                     child: Text("Menu")),
+              ),
+              ListTile(
+                title: Text("Home"),
+                onTap: _home,
               ),
               ListTile(
                 title: Text("Add"),
@@ -358,11 +363,11 @@ class _AddPageState extends State<AddPage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+      /*floatingActionButton: FloatingActionButton(
         onPressed: _home,
         tooltip: 'Home',
         child: const Icon(Icons.home),
-      ),  // This trailing comma makes auto-formatting nicer for build methods.
+      ),*/  // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

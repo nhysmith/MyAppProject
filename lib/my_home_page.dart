@@ -1,35 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:habittracker_v3/task_manager.dart';
 import 'package:habittracker_v3/view_all_page.dart';
 
 import 'add_page.dart';
-import 'bottom_bar_nav.dart';
 import 'calendar_page.dart';
-import 'my_home_page.dart';
+import 'main.dart';
 
-TaskManager taskManager = TaskManager();
-
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Habit Tracker Demo',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.lightBlue,
-      ),
-      home: const MyHomePage(title: 'Habit Tracker Home Page'), //BottomBarNav()
-    );
-  }
-}
-
-/*class MyHomePage extends StatefulWidget {
+class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
 
 
@@ -49,7 +25,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
 
     Navigator.push(context,
-    MaterialPageRoute(builder: (context) => const AddPage(title: 'Add Habit')));
+        MaterialPageRoute(builder: (context) => const AddPage(title: 'Add Habit')));
   }
   void _addHabit() {
     setState(() {
@@ -90,6 +66,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: Text("Menu")),
               ),
               ListTile(
+                title: Text("Home"),
+                //onTap: _home,
+              ),
+              ListTile(
                 title: Text("Add"),
                 onTap: _addHabit,
               ),
@@ -127,7 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ElevatedButton(onPressed: _calendarView, child: Text('Calendar')),
 
 
-          /* Row(mainAxisAlignment: MainAxisAlignment.center,
+            /* Row(mainAxisAlignment: MainAxisAlignment.center,
                  children: <Widget>[
 
                    ElevatedButton(onPressed: _addHabit, child: Text('Add New Habit'))
@@ -153,11 +133,11 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       //floatingActionButton: FloatingActionButton(
-       // onPressed: _incrementCounter,
-        //tooltip: 'Increment',
-        //child: const Icon(Icons.add),
-     // ),
+      // onPressed: _incrementCounter,
+      //tooltip: 'Increment',
+      //child: const Icon(Icons.add),
+      // ),
       // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
-}*/
+}

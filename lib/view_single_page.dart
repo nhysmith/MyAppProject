@@ -5,19 +5,15 @@ import 'package:habittracker_v3/view_all_page.dart';
 import 'add_page.dart';
 import 'calendar_page.dart';
 import 'main.dart';
+import 'my_home_page.dart';
 
 List<Item> temp = List<Item>.empty(growable: true);
-//taskManager.currentTask.log.forEach();
-/*taskManager.currentTask.log.forEach((element) {
-print(element);
-temp.add(Item(
-headerValue: element.toString(),
-expandedValue: ' '
-));
-});*/
-//int _counter = taskManager.currentTask.log.length;
 
-
+String format(DateTime date)
+{
+  String s = '';
+  return s;
+}
 class ViewSinglePage extends StatefulWidget {
   const ViewSinglePage({Key? key, required this.title}) : super(key: key);
 
@@ -37,29 +33,27 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
 
   void _incrementCounter() {
     setState(() {
-      //_counter++;
       DateTime currentDate = DateTime.now();
-      //taskManager.currentTask.log.add(currentDate);
       taskManager.currentTask.record.add(Record(currentDate, note));
-      //taskManager.currentTask.log.forEach((element) {print(element);});
       _counter = taskManager.currentTask.record.length;
+      String formattedDate = format(currentDate);
 
       //taskManager.currentTask.counter++;
       print('update habit counter');
-      print(taskManager.currentTask.iconColor);
+      //print(taskManager.currentTask.iconColor);
       temp.add(Item(
-          headerValue: currentDate.toString(),
+          headerValue: '${currentDate.month.toString()}-${currentDate.day}-${currentDate.year.toString()} ${currentDate.hour}:${currentDate.minute}:${currentDate.second.toString()}',
           expandedValue: note,
           current: currentDate,
       ));
-      //temp = List<Item>.empty(growable: true);
-      /*taskManager.currentTask.log.forEach((element) {
-        print(element);
-        temp.add(Item(
-            headerValue: element.toString(),
-            expandedValue: ' '
-        ));
-      });*/
+      if(isAscending)
+      {
+        temp.sort((b,a) => a.compareTo(b));
+      }
+      else
+      {
+        temp.sort((b,a) => b.compareTo(a));
+      }
     });
   }
 
@@ -124,15 +118,20 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
           buttonText = 'Ascending';
         }
 
-      temp = isAscending ? temp : temp.reversed.toList();
-      print(temp[0].current);
+      //temp = isAscending ? temp : (temp..sort()).reversed.toList();
+      if(isAscending)
+        {
+          temp.sort((b,a) => a.compareTo(b));
+        }
+      else
+        {
+          temp.sort((b,a) => b.compareTo(a));
+        }
     });
   }
   void _setName(){
     setState(() {
-      //_counter = taskManager.currentTask.log.length;
       _name = taskManager.currentTask.taskName;
-
     });
   }
 
@@ -167,6 +166,10 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
                     ),
                     child: Text("Menu", style: TextStyle(color: setTextColor()))),
 
+              ),
+              ListTile(
+                title: Text("Home"),
+                onTap: _home,
               ),
               ListTile(
                 title: Text("Add"),
@@ -222,7 +225,7 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
               padding: EdgeInsets.all(10),
               alignment: Alignment.center,
               child: Text(
-                'Created: ${taskManager.currentTask.created}',
+                'Created: ${taskManager.currentTask.created.month}-${taskManager.currentTask.created.day}-${taskManager.currentTask.created.year}',
                 //style: Theme.of(context).textTheme.headline6,
               ),
             ),
@@ -313,11 +316,11 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+      /*floatingActionButton: FloatingActionButton(
         onPressed: _home,
         tooltip: 'Home',
         child: const Icon(Icons.home),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),*/ // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
@@ -364,6 +367,11 @@ class Item {
     this.isExpanded = false,
   });
 
+  int compareTo(Item _com)
+  {
+    return this.current.compareTo(_com.current);
+  }
+
   String expandedValue;
   String headerValue;
   bool isExpanded;
@@ -384,7 +392,9 @@ List<Item> generateDate() {
   temp = List<Item>.empty(growable: true);
   taskManager.currentTask.record.forEach((element) {
     temp.add(Item(
-      headerValue: element.time.toString(),
+      //headerValue: element.time.toString(),
+      headerValue: '${element.time.month.toString()}-${element.time.day}-${element.time.year.toString()} ${element.time.hour}:${element.time.minute}:${element.time.second.toString()}',
+
       expandedValue: element.note,
       current: element.time,
       //note: element.note

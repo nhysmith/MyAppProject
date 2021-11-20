@@ -4,6 +4,7 @@ import 'package:habittracker_v3/view_single_page.dart';
 import 'add_page.dart';
 import 'calendar_page.dart';
 import 'main.dart';
+import 'my_home_page.dart';
 
 
 class ViewAllPage extends StatefulWidget {
@@ -86,6 +87,10 @@ class _ViewAllPageState extends State<ViewAllPage> {
                       color: Colors.lightBlue,
                     ),
                     child: Text("Menu")),
+              ),
+              ListTile(
+                title: Text("Home"),
+                onTap: _home,
               ),
               ListTile(
                 title: Text("Add"),
@@ -176,11 +181,11 @@ class _ViewAllPageState extends State<ViewAllPage> {
           ],
         )),
       ),*/
-      floatingActionButton: FloatingActionButton(
+      /*floatingActionButton: FloatingActionButton(
         onPressed: _home,
         tooltip: 'Home',
         child: const Icon(Icons.home),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),*/ // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
