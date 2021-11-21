@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.lightBlue,
       ),
       home: const MyHomePage(title: 'Habit Tracker Home Page'), //BottomBarNav()
+      //const ViewAllPage(title: 'Home',)
     );
   }
 }

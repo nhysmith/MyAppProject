@@ -9,6 +9,7 @@ import 'my_home_page.dart';
 
 List<Item> temp = List<Item>.empty(growable: true);
 Color iconColor = taskManager.currentTask.iconColor;
+String noteValue = '';
 
 String format(DateTime date)
 {
@@ -29,8 +30,8 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
   int _counter = taskManager.currentTask.record.length;
   String _name = taskManager.currentTask.taskName;
   String note = '';
-  String buttonText = 'Ascending';
-  bool isAscending = true;
+  String buttonText = 'Descending';
+  bool isAscending = false;
 
   void _incrementCounter() {
     setState(() {
@@ -55,6 +56,7 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
       {
         temp.sort((b,a) => b.compareTo(a));
       }
+      noteValue = '';
     });
   }
 
@@ -232,7 +234,7 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
               ),
             ),*/
             //MyStatelessWidget(),
-            RawMaterialButton(
+            IconButton(
                 //onPressed: _home,
               onPressed: () {
                 showDialog(
@@ -242,7 +244,10 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
                     });
               },
               //fillColor: taskManager.currentTask.iconColor,
-              child:  Container(
+              icon: Icon(
+                  Icons.color_lens,
+              color: iconColor,),
+              /*child:  Container(
                 height: 50,
                 width: 50,
                 //padding: EdgeInsets.only(left: 100, right: 100),
@@ -250,7 +255,7 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
                     color: iconColor,
                     shape: BoxShape.circle
                 ),
-              ),
+              ),*/
             ),
             Container(
               padding: EdgeInsets.all(10),
@@ -299,10 +304,10 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
                   taskManager.currentTask.description = description;
                   note = description;
                 },
-                initialValue: taskManager.currentTask.description,
+                initialValue: noteValue,
                 decoration: const InputDecoration(
                   border: UnderlineInputBorder(),
-                  labelText: 'Description',
+                  labelText: 'Note',
                 ),
               ),
             ),
@@ -522,7 +527,7 @@ class MyStatelessWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RawMaterialButton(
+    return IconButton(
       onPressed: () => showDialog<String>(
         context: context,
         builder: (BuildContext context) => AlertDialog(
@@ -539,9 +544,13 @@ class MyStatelessWidget extends StatelessWidget {
             ),
           ],
         ),
-      ),
+      ), icon: Icon(
+      Icons.color_lens,
+      color: iconColor,
+    ),
       //child: const Text('Show Dialog'),
-      child:  Container(
+      //child: Icon(Icons.c),
+      /*Container(
         height: 50,
         width: 50,
         //padding: EdgeInsets.only(left: 100, right: 100),
@@ -549,7 +558,8 @@ class MyStatelessWidget extends StatelessWidget {
             color: iconColor,
             shape: BoxShape.circle
         ),
-      ),
+      ),*/
+      //style: ,
     );
   }
 }
