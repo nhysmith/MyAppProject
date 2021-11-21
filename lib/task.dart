@@ -80,7 +80,7 @@ class Task
     DateTime _created = DateTime.parse(json['created'] as String);
     int _counter = int.parse(json['counter'] as String);
 
-    var _recordList = jsonDecode(json['record']);
+    var _recordList = json['record'] as List;
     List<Record> _records = _recordList.map((json) => Record.fromJson(json)).toList();
     /*var _logList = jsonDecode(json['log']);
     List<String> _logString = List.from(_logList);

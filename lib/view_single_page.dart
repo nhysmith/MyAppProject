@@ -8,6 +8,7 @@ import 'main.dart';
 import 'my_home_page.dart';
 
 List<Item> temp = List<Item>.empty(growable: true);
+Color iconColor = taskManager.currentTask.iconColor;
 
 String format(DateTime date)
 {
@@ -145,6 +146,11 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
     return Colors.black;
   }
 
+  Color setIconColor(Color color)
+  {
+    return color;
+  }
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -162,24 +168,28 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
                 height: 65,
                 child: DrawerHeader(
                     decoration: BoxDecoration(
-                      color: taskManager.currentTask.iconColor,
+                      color: iconColor,
                     ),
                     child: Text("Menu", style: TextStyle(color: setTextColor()))),
 
               ),
               ListTile(
                 title: Text("Home"),
+                leading: Icon(Icons.home),
                 onTap: _home,
               ),
               ListTile(
+                leading: Icon(Icons.add),
                 title: Text("Add"),
                 onTap: _addHabit,
               ),
               ListTile(
+                leading: Icon(Icons.view_column),
                 title: Text("View All: List View"),
                 onTap: _viewHabits,
               ),
               ListTile(
+                leading: Icon(Icons.calendar_today),
                 title: Text("View All: Calendar View"),
                 onTap: _calendarView,
               ),
@@ -194,7 +204,7 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
         iconTheme: IconThemeData(color: setTextColor()),
 
         //leading: Ico,
-        backgroundColor: taskManager.currentTask.iconColor,
+        backgroundColor: iconColor,
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
@@ -212,13 +222,34 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
            ),
             SizedBox(width: 20,),
             //CustomPaint(),
-            Container(
+            /*Container(
               height: 50,
               width: 50,
               //padding: EdgeInsets.only(left: 100, right: 100),
               decoration: BoxDecoration(
                   color: taskManager.currentTask.iconColor,
                   shape: BoxShape.circle
+              ),
+            ),*/
+            //MyStatelessWidget(),
+            RawMaterialButton(
+                //onPressed: _home,
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (_) {
+                      return MyDialog();
+                    });
+              },
+              //fillColor: taskManager.currentTask.iconColor,
+              child:  Container(
+                height: 50,
+                width: 50,
+                //padding: EdgeInsets.only(left: 100, right: 100),
+                decoration: BoxDecoration(
+                    color: iconColor,
+                    shape: BoxShape.circle
+                ),
               ),
             ),
             Container(
@@ -277,8 +308,23 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
             ),
 
             const SizedBox(height: 25,),
-            ElevatedButton(onPressed: _incrementCounter, child: Text('Complete Habit')),
-            MyStatelessWidget(),
+            //Slider(onChanged: (double value) { print(value); }, value: 5, min: 0, max: 100,),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+              Container(
+                //width: 50,
+                //padding: EdgeInsets.only(left: 50, right: 10),
+                child: ElevatedButton(onPressed: _incrementCounter, child: Text('Complete Habit'),
+                  style: ElevatedButton.styleFrom(maximumSize: Size(500,100),),
+                ),
+              ),
+              Container(
+                //padding: EdgeInsets.only(right: 0,left: 0),
+                child: AlertDialogWidget(),
+              ),
+            ],),
             /*ListView.builder(
                 padding: const EdgeInsets.only(right: 20),
                 shrinkWrap: true,
@@ -307,7 +353,7 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
             label: Text(buttonText)),
             //child: Text()),
 
-            MyStatefulWidget.callback( () =>
+            ExpansionPanelWidget.callback( () =>
                 {
                   _setCounter(),
                   print(_counter)
@@ -326,12 +372,12 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
 }
 
 /// This is the stateless widget that the main application instantiates.
-class MyStatelessWidget extends StatelessWidget {
-  const MyStatelessWidget({Key? key}) : super(key: key);
+class AlertDialogWidget extends StatelessWidget {
+  const AlertDialogWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(style: ElevatedButton.styleFrom(primary: Colors.redAccent),
+    return ElevatedButton(style: ElevatedButton.styleFrom(primary: Colors.red),
       onPressed: () => showDialog<String>(
         context: context,
         builder: (BuildContext context) => AlertDialog(
@@ -404,23 +450,23 @@ List<Item> generateDate() {
   return temp;
 }
 /// This is the stateful widget that the main application instantiates.
-class MyStatefulWidget extends StatefulWidget {
-   MyStatefulWidget({Key? key}) : super(key: key);
+class ExpansionPanelWidget extends StatefulWidget {
+   ExpansionPanelWidget({Key? key}) : super(key: key);
 
   late void Function() _callback;
 
-  MyStatefulWidget.callback(final void Function() callback)
+  ExpansionPanelWidget.callback(final void Function() callback)
   {
     _callback = callback;
   }
 
 
   @override
-  State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
+  State<ExpansionPanelWidget> createState() => _ExpansionPanelWidgetState();
 }
 
 /// This is the private State class that goes with MyStatefulWidget.
-class _MyStatefulWidgetState extends State<MyStatefulWidget> {
+class _ExpansionPanelWidgetState extends State<ExpansionPanelWidget> {
   final List<Item> _data = generateDate();
   //_data.
 
@@ -468,3 +514,202 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   }
 }
 
+
+
+/// This is the stateless widget that the main application instantiates.
+class MyStatelessWidget extends StatelessWidget {
+  const MyStatelessWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return RawMaterialButton(
+      onPressed: () => showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('AlertDialog Title'),
+          content: SliderWidget(),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'Cancel'),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'OK'),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      ),
+      //child: const Text('Show Dialog'),
+      child:  Container(
+        height: 50,
+        width: 50,
+        //padding: EdgeInsets.only(left: 100, right: 100),
+        decoration: BoxDecoration(
+            color: iconColor,
+            shape: BoxShape.circle
+        ),
+      ),
+    );
+  }
+}
+
+/// This is the stateful widget that the main application instantiates.
+class SliderWidget extends StatefulWidget {
+  SliderWidget({Key? key}) : super(key: key);
+
+  late void Function(int) _callback;
+
+  SliderWidget.callback(final void Function(int) callback)
+  {
+    _callback = callback;
+  }
+
+  @override
+  State<SliderWidget> createState() => _SliderWidgetState();
+}
+
+/// This is the private State class that goes with MyStatefulWidget.
+class _SliderWidgetState extends State<SliderWidget> {
+  double _currentSliderValue = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Slider(
+      value: _currentSliderValue,
+      min: 0,
+      max: 255,
+      //divisions: 5,
+      //label: _currentSliderValue.round().toString(),
+      //activeColor: LinearGradient(colors: <Color>[Color(0xffee0000)],
+      onChanged: (double value) {
+        setState(() {
+
+          _currentSliderValue = value;
+          widget._callback(_currentSliderValue.round());
+          print(value.round());
+        });
+      },
+    );
+
+  }
+
+}
+
+class MyDialog extends StatefulWidget {
+  @override
+  _MyDialogState createState() => new _MyDialogState();
+}
+
+class _MyDialogState extends State<MyDialog> {
+  Color _c = Colors.redAccent;
+  double sliderValueR = 0;
+  double sliderValueG = 0;
+  double sliderValueB = 0;
+
+  Color color = iconColor;
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      content:  Container(
+        height: 50,
+        width: 50,
+        //padding: EdgeInsets.only(left: 100, right: 100),
+        decoration: BoxDecoration(
+            color: color,
+            shape: BoxShape.circle
+        ),
+      ),
+      /*Container(
+        color: _c,
+        height: 20.0,
+        width: 20.0,
+      ),*/
+      actions: <Widget>[
+        /*FlatButton(
+            child: Text('Switch'),
+            onPressed: () => setState(() {
+              _c == Colors.redAccent
+                  ? _c = Colors.blueAccent
+                  : _c = Colors.redAccent;
+            })),*/
+        SliderTheme(
+          data: SliderTheme.of(context).copyWith(
+              activeTrackColor: Colors.red,
+              inactiveTrackColor: Colors.red[100],
+              thumbColor: Colors.red,
+              overlayColor: Color.fromARGB(100, 255, 205, 210)
+          ),
+          child: Slider(
+            onChanged: (double value) {
+              print(value);
+              setState(() {
+                sliderValueR = value;
+                color = Color.fromARGB(255, sliderValueR.round(), sliderValueG.round(), sliderValueB.round());
+              });
+            },
+            value: sliderValueR, min: 0, max: 255,
+          ),
+        ),
+        SliderTheme(
+            data: SliderTheme.of(context).copyWith(
+            activeTrackColor: Colors.green,
+            inactiveTrackColor: Colors.green[100],
+            thumbColor: Colors.green,
+            overlayColor: Color.fromARGB(100, 200, 230, 201)
+              ),
+          child: Slider(
+              onChanged: (double value) {
+                print(value);
+                setState(() {
+                  sliderValueG = value;
+                  color = Color.fromARGB(255, sliderValueR.round(), sliderValueG.round(), sliderValueB.round());
+                });
+              },
+              value: sliderValueG, min: 0, max: 255,
+            ),
+        ),
+        SliderTheme(
+          data: SliderTheme.of(context).copyWith(
+              //activeTrackColor: Colors.green,
+              //inactiveTrackColor: Colors.green[100],
+              //thumbColor: Colors.green,
+              //overlayColor: Color.fromARGB(100, 200, 230, 201)
+          ),
+          child: Slider(
+            onChanged: (double value) {
+              print(value);
+              setState(() {
+                sliderValueB = value;
+                color = Color.fromARGB(255, sliderValueR.round(), sliderValueG.round(), sliderValueB.round());
+              });
+            },
+            value: sliderValueB, min: 0, max: 255,
+          ),
+        ),
+        Row(
+          children: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'Cancel'),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: (){ //
+              setState(() {
+                taskManager.currentTask.iconColor = color;
+                iconColor = color;
+              });
+              //Navigator.pop(context, 'OK');
+
+                //Navigator.push(context, route);
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ViewSinglePage(title: 'View Habit')));
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        )
+      ],
+    );
+  }
+}

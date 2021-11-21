@@ -27,6 +27,13 @@ class _MyHomePageState extends State<MyHomePage> {
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => const AddPage(title: 'Add Habit')));
   }
+  void _home() {
+    setState(() {
+    });
+
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => MyHomePage(title: 'Habit Tracker Home Page')));
+  }
   void _addHabit() {
     setState(() {
     });
@@ -66,18 +73,22 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: Text("Menu")),
               ),
               ListTile(
+                leading: Icon(Icons.home),
                 title: Text("Home"),
-                //onTap: _home,
+                onTap: _home,
               ),
               ListTile(
+                leading: Icon(Icons.add),
                 title: Text("Add"),
                 onTap: _addHabit,
               ),
               ListTile(
+                leading: Icon(Icons.view_column),
                 title: Text("View All: List View"),
                 onTap: _viewHabits,
               ),
               ListTile(
+                leading: Icon(Icons.calendar_today),
                 title: Text("View All: Calendar View"),
                 onTap: _calendarView,
               ),

@@ -1,5 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:habittracker_v3/task.dart';
 import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TaskManager
 {
@@ -12,13 +14,40 @@ class TaskManager
     currentTask = tasks[index];
     taskIndex = index;
 
-    String taskListString = jsonEncode(tasks);
-    print(taskListString);
-    var __test = jsonDecode(taskListString) as List;
+    Save();
+    Load();
+
+    /*var __test = jsonDecode(taskListString) as List;
     List<Task> _test = __test.map((obj) => Task.fromJson(obj)).toList();
     _test.forEach((element) {
       print(element.taskName);
 
-    });
+    });*/
+  }
+
+  void Save() async
+  {
+    String taskListString = jsonEncode(tasks);
+    print(taskListString);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('Save', taskListString);
+  }
+
+  void Load() async
+  {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if(prefs.containsKey('Save'))
+      {
+        String jsonString = prefs.getString('Save').toString();
+
+        var __test = jsonDecode(jsonString) as List;
+        List<Task> _test = __test.map((obj) => Task.fromJson(obj)).toList();
+        print('great');
+        _test.forEach((element) {
+          print('afasdsad');
+
+        });
+      }
+
   }
 }

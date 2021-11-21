@@ -89,18 +89,22 @@ class _ViewAllPageState extends State<ViewAllPage> {
                     child: Text("Menu")),
               ),
               ListTile(
+                leading: Icon(Icons.home),
                 title: Text("Home"),
                 onTap: _home,
               ),
               ListTile(
+                leading: Icon(Icons.add),
                 title: Text("Add"),
                 onTap: _addHabit,
               ),
               ListTile(
+                leading: Icon(Icons.view_column),
                 title: Text("View All: List View"),
                 onTap: _viewHabits,
               ),
               ListTile(
+                leading: Icon(Icons.calendar_today),
                 title: Text("View All: Calendar View"),
                 onTap: _calendarView,
               ),
