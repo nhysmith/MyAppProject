@@ -8,7 +8,7 @@ import 'main.dart';
 import 'my_home_page.dart';
 
 List<Item> temp = List<Item>.empty(growable: true);
-Color iconColor = taskManager.currentTask.iconColor;
+//Color iconColor = taskManager.currentTask.iconColor;
 String noteValue = '';
 
 String format(DateTime date)
@@ -29,20 +29,22 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
 
   int _counter = taskManager.currentTask.record.length;
   String _name = taskManager.currentTask.taskName;
+  String _description = taskManager.currentTask.description;
   String note = '';
   String buttonText = 'Descending';
   bool isAscending = false;
 
-  void _incrementCounter() {
+  //iconColor = taskManager.currentTask.iconColor;
+
+  void _completeHabit() {
     setState(() {
       DateTime currentDate = DateTime.now();
       taskManager.currentTask.record.add(Record(currentDate, note));
+      taskManager.Save();
       _counter = taskManager.currentTask.record.length;
-      String formattedDate = format(currentDate);
 
-      //taskManager.currentTask.counter++;
       print('update habit counter');
-      //print(taskManager.currentTask.iconColor);
+
       temp.add(Item(
           headerValue: '${currentDate.month.toString()}-${currentDate.day}-${currentDate.year.toString()} ${currentDate.hour}:${currentDate.minute}:${currentDate.second.toString()}',
           expandedValue: note,
@@ -56,7 +58,7 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
       {
         temp.sort((b,a) => b.compareTo(a));
       }
-      noteValue = '';
+      //noteValue = '';
     });
   }
 
@@ -68,7 +70,7 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
       print('deleting habit ');
     });
     Navigator.push(context,
-        MaterialPageRoute(builder: (context) => MyHomePage(title: 'Habit Tracker Home Page')));
+        MaterialPageRoute(builder: (context) => MyHomePage(title: 'Home')));
   }
 
   void _home() {
@@ -76,7 +78,7 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
     });
 
     Navigator.push(context,
-        MaterialPageRoute(builder: (context) => MyHomePage(title: 'Habit Tracker Home Page')));
+        MaterialPageRoute(builder: (context) => MyHomePage(title: 'Home')));
   }
 
   void _addHabit() {
@@ -138,7 +140,13 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
     });
   }
 
-  Color setTextColor()
+  void _setDescription(){
+    setState(() {
+      _description = taskManager.currentTask.description;
+    });
+  }
+
+  Color _setTextColor()
   {
     if(taskManager.currentTask.iconColor.value < Color(0xff6c6866).value)
       {
@@ -148,9 +156,9 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
     return Colors.black;
   }
 
-  Color setIconColor(Color color)
+  Color _setIconColor()
   {
-    return color;
+    return taskManager.currentTask.iconColor;
   }
 
   @override
@@ -170,10 +178,9 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
                 height: 65,
                 child: DrawerHeader(
                     decoration: BoxDecoration(
-                      color: iconColor,
+                      color: _setIconColor(),
                     ),
-                    child: Text("Menu", style: TextStyle(color: setTextColor()))),
-
+                    child: Text("Menu", style: TextStyle(color: _setTextColor()))),
               ),
               ListTile(
                 title: Text("Home"),
@@ -186,7 +193,7 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
                 onTap: _addHabit,
               ),
               ListTile(
-                leading: Icon(Icons.view_column),
+                leading: Icon(Icons.checklist),
                 title: Text("View All: List View"),
                 onTap: _viewHabits,
               ),
@@ -202,11 +209,23 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title, style: TextStyle(color: setTextColor()),),
-        iconTheme: IconThemeData(color: setTextColor()),
-
-        //leading: Ico,
-        backgroundColor: iconColor,
+        title: Text(widget.title, style: TextStyle(color: _setTextColor()),),
+        iconTheme: IconThemeData(color: _setTextColor()),
+        backgroundColor: _setIconColor(),
+        actions: [
+          IconButton(
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (_) {
+                    return MyDialog();
+                  });
+            },
+            icon: Icon(
+              Icons.color_lens,
+              color: _setTextColor(),),
+          ),
+        ],
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
@@ -215,48 +234,22 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
           //mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
            Container(
-             margin: const EdgeInsets.only(top: 35),
+             margin: const EdgeInsets.only(top: 30),
              alignment: Alignment.topCenter,
              child: Text(
              '${_name}',
              style: Theme.of(context).textTheme.headline5,
-           ),
-           ),
-            SizedBox(width: 20,),
-            //CustomPaint(),
-            /*Container(
-              height: 50,
-              width: 50,
-              //padding: EdgeInsets.only(left: 100, right: 100),
-              decoration: BoxDecoration(
-                  color: taskManager.currentTask.iconColor,
-                  shape: BoxShape.circle
-              ),
-            ),*/
-            //MyStatelessWidget(),
-            IconButton(
-                //onPressed: _home,
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (_) {
-                      return MyDialog();
-                    });
-              },
-              //fillColor: taskManager.currentTask.iconColor,
-              icon: Icon(
-                  Icons.color_lens,
-              color: iconColor,),
-              /*child:  Container(
-                height: 50,
-                width: 50,
-                //padding: EdgeInsets.only(left: 100, right: 100),
-                decoration: BoxDecoration(
-                    color: iconColor,
-                    shape: BoxShape.circle
-                ),
-              ),*/
             ),
+           ),
+            Container(
+              margin: const EdgeInsets.only(top: 10),
+              alignment: Alignment.topCenter,
+              child: Text(
+                '${_description}',
+                style: Theme.of(context).textTheme.headline6,
+              ),
+            ),
+            SizedBox(width: 20,),
             Container(
               padding: EdgeInsets.all(10),
               alignment: Alignment.center,
@@ -291,18 +284,34 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
                 ),
               ),
             ),
-
             Container(
               margin: const EdgeInsets.only(top: 25),
               alignment: Alignment.topCenter,
               padding: EdgeInsets.only(left: 10, right: 10),
-
               child: TextFormField(
                 onChanged: (description)
                 {
                   //print('Habit Name: $name');
                   taskManager.currentTask.description = description;
-                  note = description;
+                  _setDescription();
+                },
+                initialValue: taskManager.currentTask.description,
+                decoration: const InputDecoration(
+                  border: UnderlineInputBorder(),
+                  labelText: 'Description',
+                ),
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(top: 25),
+              alignment: Alignment.topCenter,
+              padding: EdgeInsets.only(left: 10, right: 10),
+              child: TextFormField(
+                onChanged: (noteVal)
+                {
+                  //print('Habit Name: $name');
+                  //taskManager.currentTask.description = description;
+                  note = noteVal;
                 },
                 initialValue: noteValue,
                 decoration: const InputDecoration(
@@ -321,7 +330,7 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
               Container(
                 //width: 50,
                 //padding: EdgeInsets.only(left: 50, right: 10),
-                child: ElevatedButton(onPressed: _incrementCounter, child: Text('Complete Habit'),
+                child: ElevatedButton(onPressed: _completeHabit, child: Text('Complete Habit'),
                   style: ElevatedButton.styleFrom(maximumSize: Size(500,100),),
                 ),
               ),
@@ -367,11 +376,6 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
           ],
         ),
       ),
-      /*floatingActionButton: FloatingActionButton(
-        onPressed: _home,
-        tooltip: 'Home',
-        child: const Icon(Icons.home),
-      ),*/ // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
@@ -395,9 +399,22 @@ class AlertDialogWidget extends StatelessWidget {
             ),
             TextButton(
               onPressed: (){ Navigator.pop(context, 'OK');
-              taskManager.tasks.removeAt(taskManager.taskIndex);
+              /*if(taskManager.taskIndex == null)
+                {
+                  taskManager.tasks.remove(taskManager.currentTask);
+                }
+              else {
+                taskManager.tasks.removeAt(taskManager.taskIndex);
+              }*/
+              taskManager.tasks.remove(taskManager.currentTask);
+              if(taskManager.tasks.isNotEmpty)
+                {
+                  taskManager.currentTask = taskManager.tasks.last;
+                }
+              taskManager.Save();
+
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => MyHomePage(title: 'Habit Tracker Home Page')));
+                  MaterialPageRoute(builder: (context) => MyHomePage(title: 'Home')));
               },
               child: const Text('OK'),
             ),
@@ -445,12 +462,11 @@ List<Item> generateDate() {
     temp.add(Item(
       //headerValue: element.time.toString(),
       headerValue: '${element.time.month.toString()}-${element.time.day}-${element.time.year.toString()} ${element.time.hour}:${element.time.minute}:${element.time.second.toString()}',
-
       expandedValue: element.note,
       current: element.time,
       //note: element.note
     ));
-    print(element);
+    //print(element);
   });
   return temp;
 }
@@ -495,25 +511,47 @@ class _ExpansionPanelWidgetState extends State<ExpansionPanelWidget> {
         return ExpansionPanel(
           canTapOnHeader: true,
           headerBuilder: (BuildContext context, bool isExpanded) {
-            return Dismissible(key: ValueKey(item),
+            return
+              Container(
+                //key: ValueKey(item),
               child: ListTile(
               title: Text(item.headerValue),
             ),
-            background: Container(
+            /*background: Container(
                 color: Colors.red,
-            ),
-              onDismissed: (DismissDirection direction) {
+            ),*/
+              /*onDismissed: (DismissDirection direction) {
               setState(() {
                 _data.removeWhere((Item currentItem) => item == currentItem);
                 taskManager.currentTask.record.removeWhere((Record currentRecord) => item.current == currentRecord.time);
                 //print('record length'+taskManager.currentTask.record.length.toString());
                 widget._callback();
               });
-              },
+              },*/
             );
           },
           body: ListTile(
-              title: Text(item.expandedValue),),
+            //leading: Icon(Icons.border_color),
+              title: Text(item.expandedValue),
+            trailing: IconButton(
+              onPressed: () => {
+                _data.removeWhere((Item currentItem) => item == currentItem),
+                taskManager.currentTask.record.removeWhere((Record currentRecord) => item.current == currentRecord.time),
+                taskManager.Save(),
+                widget._callback(),
+                if(taskManager.tasks.isNotEmpty)
+                  {
+                    taskManager.currentTask = taskManager.tasks.last
+                  }
+                else
+                  {
+
+                  }
+            },
+              icon: Icon(Icons.delete),
+
+            ),
+          ),
           isExpanded: item.isExpanded,);
       }).toList(),);
   }
@@ -594,10 +632,9 @@ class _SliderWidgetState extends State<SliderWidget> {
       //activeColor: LinearGradient(colors: <Color>[Color(0xffee0000)],
       onChanged: (double value) {
         setState(() {
-
           _currentSliderValue = value;
           widget._callback(_currentSliderValue.round());
-          print(value.round());
+          //print(value.round());
         });
       },
     );
@@ -612,12 +649,11 @@ class MyDialog extends StatefulWidget {
 }
 
 class _MyDialogState extends State<MyDialog> {
-  Color _c = Colors.redAccent;
-  double sliderValueR = 0;
-  double sliderValueG = 0;
-  double sliderValueB = 0;
+  double sliderValueR = taskManager.currentTask.iconColor.red *1.0;
+  double sliderValueG = taskManager.currentTask.iconColor.green *1.0;
+  double sliderValueB = taskManager.currentTask.iconColor.blue *1.0;
 
-  Color color = iconColor;
+  Color color = taskManager.currentTask.iconColor;
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -652,7 +688,7 @@ class _MyDialogState extends State<MyDialog> {
           ),
           child: Slider(
             onChanged: (double value) {
-              print(value);
+              //print(value);
               setState(() {
                 sliderValueR = value;
                 color = Color.fromARGB(255, sliderValueR.round(), sliderValueG.round(), sliderValueB.round());
@@ -670,7 +706,7 @@ class _MyDialogState extends State<MyDialog> {
               ),
           child: Slider(
               onChanged: (double value) {
-                print(value);
+                //print(value);
                 setState(() {
                   sliderValueG = value;
                   color = Color.fromARGB(255, sliderValueR.round(), sliderValueG.round(), sliderValueB.round());
@@ -688,7 +724,7 @@ class _MyDialogState extends State<MyDialog> {
           ),
           child: Slider(
             onChanged: (double value) {
-              print(value);
+              //print(value);
               setState(() {
                 sliderValueB = value;
                 color = Color.fromARGB(255, sliderValueR.round(), sliderValueG.round(), sliderValueB.round());

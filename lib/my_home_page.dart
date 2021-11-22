@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:habittracker_v3/view_all_page.dart';
+import 'package:habittracker_v3/view_single_page.dart';
 
 import 'add_page.dart';
 import 'calendar_page.dart';
@@ -16,23 +17,25 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  Color color = Colors.white;
+  String name = '';
+
 
   void _incrementCounter() {
     setState(() {
 
-      _counter++;
     });
 
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => const AddPage(title: 'Add Habit')));
   }
+
   void _home() {
     setState(() {
     });
 
     Navigator.push(context,
-        MaterialPageRoute(builder: (context) => MyHomePage(title: 'Habit Tracker Home Page')));
+        MaterialPageRoute(builder: (context) => const MyHomePage(title: 'Home')));
   }
   void _addHabit() {
     setState(() {
@@ -66,15 +69,15 @@ class _MyHomePageState extends State<MyHomePage> {
             children: [
               Container(
                 height: 65,
-                child: DrawerHeader(
+                child: const DrawerHeader(
                     decoration: BoxDecoration(
                       color: Colors.lightBlue,
                     ),
                     child: Text("Menu")),
               ),
               ListTile(
-                leading: Icon(Icons.home),
-                title: Text("Home"),
+                leading: const Icon(Icons.home),
+                title: const Text("Home"),
                 onTap: _home,
               ),
               ListTile(
@@ -83,7 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 onTap: _addHabit,
               ),
               ListTile(
-                leading: Icon(Icons.view_column),
+                leading: Icon(Icons.checklist),
                 title: Text("View All: List View"),
                 onTap: _viewHabits,
               ),
@@ -103,7 +106,15 @@ class _MyHomePageState extends State<MyHomePage> {
         child: ListView(
           //mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            SizedBox(height: 35,),
+            //SizedBox(height: 35,),
+            Container(
+              alignment: Alignment.center,
+              padding: const EdgeInsets.all(35),
+              child: Text(
+                'Habit Keeper',
+                style: Theme.of(context).textTheme.headline4,
+              ),
+            ),
 
             Container(
               alignment: Alignment.center,
@@ -113,9 +124,86 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             SizedBox(height: 35,),
-            ElevatedButton(onPressed: _addHabit, child: Text('Add New Habit')),
-            ElevatedButton(onPressed: _viewHabits, child: Text('View All Habits')),
-            ElevatedButton(onPressed: _calendarView, child: Text('Calendar')),
+            Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  //RotatedBox(quarterTurns: 1, child: Icon(Icons.compare_arrows)
+                  FloatingActionButton(
+                      onPressed: _viewHabits,
+                      child: Icon(Icons.checklist),
+                      //RotatedBox(quarterTurns: 1, child: Icon(Icons.view_column)),
+                      tooltip: 'View All Habits',
+                      heroTag: 'btn1',
+                  ),
+                  /*IconButton(
+                      onPressed: _viewHabits,
+                      icon: Icon(Icons.view_column),
+                      tooltip: 'View All Habits'),*/
+                  FloatingActionButton(onPressed: _addHabit, tooltip: 'Add New Habit', child: Icon(Icons.add),
+                    heroTag: 'btn2',
+                  ),
+                  FloatingActionButton(onPressed: _calendarView, tooltip: 'Calendar', child: Icon(Icons.calendar_today),
+                    heroTag: 'btn3',
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              alignment: Alignment.centerLeft,
+              padding: EdgeInsets.only(left: 25, top: 50),
+              child: Text(
+                'Most Recently Viewed:',
+                style: Theme.of(context).textTheme.headline5,
+              ),
+            ),
+            ListTile(
+              onTap: () => {
+                if(taskManager.tasks.length > 0)
+                  {
+                    Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ViewSinglePage(title: 'View Habit')))
+                  }
+                else
+                {
+
+                }
+              },
+              title: Container(
+                height: 50,
+                padding: const EdgeInsets.all(10),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                        height: 50,
+                        width: 50,
+                        decoration: BoxDecoration(
+                          color: taskManager.tasks.length > 0 ? taskManager.currentTask.iconColor : color,
+                          shape: BoxShape.circle
+                        ),
+                      ),
+                      Text(taskManager.tasks.length > 0 ? taskManager.currentTask.taskName : name),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            /*SizedBox(height: 35,),
+            Container(
+              //height: 50,
+              padding: EdgeInsets.symmetric(horizontal: 100),
+              child: ElevatedButton(onPressed: _addHabit, child: Text('Add New Habit')),
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 100),
+              child: ElevatedButton(onPressed: _viewHabits, child: Text('View All Habits')),
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 100),
+              child: ElevatedButton(onPressed: _calendarView, child: Text('Calendar')),
+            ),*/
 
 
             /* Row(mainAxisAlignment: MainAxisAlignment.center,
@@ -143,12 +231,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      //floatingActionButton: FloatingActionButton(
-      // onPressed: _incrementCounter,
-      //tooltip: 'Increment',
-      //child: const Icon(Icons.add),
-      // ),
-      // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

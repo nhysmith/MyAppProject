@@ -33,7 +33,7 @@ class _CalendarPageState extends State<CalendarPage> {
     });
 
     Navigator.push(context,
-        MaterialPageRoute(builder: (context) => MyHomePage(title: 'Habit Tracker Home Page')));
+        MaterialPageRoute(builder: (context) => MyHomePage(title: 'Home')));
   }
 
   void _viewHabit(int index) {
@@ -99,7 +99,7 @@ class _CalendarPageState extends State<CalendarPage> {
                 onTap: _addHabit,
               ),
               ListTile(
-                leading: Icon(Icons.view_column),
+                leading: Icon(Icons.checklist),
                 title: Text("View All: List View"),
                 onTap: _viewHabits,
               ),
@@ -122,6 +122,7 @@ class _CalendarPageState extends State<CalendarPage> {
           view: CalendarView.month,
           showDatePickerButton: true,
           showNavigationArrow: true,
+          initialSelectedDate: DateTime.now(),
           //allowViewNavigation: false,
           /*allowedViews: <CalendarView>[
             //CalendarView.day,

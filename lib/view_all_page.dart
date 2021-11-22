@@ -26,14 +26,14 @@ class ViewAllPage extends StatefulWidget {
 }
 
 class _ViewAllPageState extends State<ViewAllPage> {
-  int _counter = taskManager.tasks.length;
+  //int _counter = taskManager.tasks.length;
 
   void _home() {
     setState(() {
     });
 
     Navigator.push(context,
-        MaterialPageRoute(builder: (context) => MyHomePage(title: 'Habit Tracker Home Page')));
+        MaterialPageRoute(builder: (context) => const MyHomePage(title: 'Home')));
   }
 
   void _addHabit() {
@@ -99,7 +99,7 @@ class _ViewAllPageState extends State<ViewAllPage> {
                 onTap: _addHabit,
               ),
               ListTile(
-                leading: Icon(Icons.view_column),
+                leading: Icon(Icons.checklist),
                 title: Text("View All: List View"),
                 onTap: _viewHabits,
               ),
@@ -115,7 +115,7 @@ class _ViewAllPageState extends State<ViewAllPage> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Text(widget.title + ' (${taskManager.tasks.length})'),
       ),
       body: ListView.builder(
         padding: const EdgeInsets.only(right: 20),

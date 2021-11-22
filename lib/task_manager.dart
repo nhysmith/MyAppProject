@@ -14,8 +14,8 @@ class TaskManager
     currentTask = tasks[index];
     taskIndex = index;
 
-    Save();
-    Load();
+    //Save();
+    //Load();
 
     /*var __test = jsonDecode(taskListString) as List;
     List<Task> _test = __test.map((obj) => Task.fromJson(obj)).toList();
@@ -42,9 +42,14 @@ class TaskManager
 
         var __test = jsonDecode(jsonString) as List;
         List<Task> _test = __test.map((obj) => Task.fromJson(obj)).toList();
-        print('great');
+        print(jsonString);
+        tasks = _test;
+        if(tasks.isNotEmpty)
+          {
+            setCurrentTask(0);
+          }
         _test.forEach((element) {
-          print('afasdsad');
+          print(element.taskName);
 
         });
       }

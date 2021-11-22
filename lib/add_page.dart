@@ -73,6 +73,7 @@ class _AddPageState extends State<AddPage> {
     Task task = Task(taskName, description, iconColor);
     task.setIconColor(r, g, b);
     taskManager.tasks.add(task);
+    taskManager.Save();
     print('Habit Name: ' + task.taskName);
     print('Habit Description: ' + task.description);
 
@@ -140,7 +141,7 @@ class _AddPageState extends State<AddPage> {
                 onTap: _addHabit,
               ),
               ListTile(
-                leading: Icon(Icons.view_column),
+                leading: Icon(Icons.checklist),
                 title: Text("View All: List View"),
                 onTap: _viewHabits,
               ),
@@ -270,7 +271,7 @@ class _AddPageState extends State<AddPage> {
                 child:  SliderWidget.callback(
                         (_r) =>
                     {
-                      print('callback: ${_r}'),
+                      //print('callback: ${_r}'),
                       //iconColor.withRed(_r),
                       r = _r,
                       _setColor()
@@ -286,7 +287,7 @@ class _AddPageState extends State<AddPage> {
               child:  SliderWidget.callback(
                       (_g) =>
                   {
-                    print('callback: ${_g}'),
+                    //print('callback: ${_g}'),
                     //iconColor.withRed(_r),
                     g = _g,
                     _setColor()
@@ -301,50 +302,13 @@ class _AddPageState extends State<AddPage> {
               child:  SliderWidget.callback(
                       (_b) =>
                   {
-                    print('callback: ${_b}'),
+                    //print('callback: ${_b}'),
                     //iconColor.withRed(_),
                     b = _b,
                     _setColor()
                   }
               ),
             ),
-            /*MyStatefulWidget.callback(
-                    (_r) =>
-                {
-                  print('callback: ${_r}'),
-                  //iconColor.withRed(_r),
-                  r = _r,
-                  _setColor()
-                }
-            ),
-
-            Text('g',
-              style: Theme.of(context).textTheme.headline5,
-            ),
-            //MyStatefulWidget(),
-            MyStatefulWidget.callback(
-                    (_g) =>
-                {
-                  print('callback: ${_g}'),
-                  //iconColor.withGreen(_g),
-                  //_setColor(),
-                  g = _g,
-                  _setColor()
-                }
-            ),
-            Text('b',
-              style: Theme.of(context).textTheme.headline5,
-            ),
-            //MyStatefulWidget(),
-            MyStatefulWidget.callback(
-                    (_b) =>
-                {
-                  print('callback: ${_b}'),
-                  //iconColor.withBlue(_b),
-                  b = _b,
-                  _setColor()
-                }
-            ),*/
           Container(
             padding: EdgeInsets.symmetric(horizontal: 100),
             child: ElevatedButton(onPressed: _add, child: const Text('Add'))
@@ -421,10 +385,8 @@ class _SliderWidgetState extends State<SliderWidget> {
       //activeColor: LinearGradient(colors: <Color>[Color(0xffee0000)],
       onChanged: (double value) {
         setState(() {
-
           _currentSliderValue = value;
           widget._callback(_currentSliderValue.round());
-          print(value.round());
         });
       },
     );

@@ -15,19 +15,21 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
+  //taskManager.Load();
   @override
   Widget build(BuildContext context) {
+    taskManager.Load();
     return MaterialApp(
-      title: 'Habit Tracker Demo',
+      title: 'Habit Keeper',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.lightBlue,
       ),
-      home: const MyHomePage(title: 'Habit Tracker Home Page'), //BottomBarNav()
+      home: const MyHomePage(title: 'Home'), //BottomBarNav()
       //const ViewAllPage(title: 'Home',)
     );
   }
+
 }
 
 /*class MyHomePage extends StatefulWidget {
