@@ -10,6 +10,8 @@ import 'my_home_page.dart';
 List<Item> temp = List<Item>.empty(growable: true);
 //Color iconColor = taskManager.currentTask.iconColor;
 String noteValue = '';
+bool isAscending = false;
+
 
 String format(DateTime date)
 {
@@ -32,7 +34,6 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
   String _description = taskManager.currentTask.description;
   String note = '';
   String buttonText = 'Descending';
-  bool isAscending = false;
 
   //iconColor = taskManager.currentTask.iconColor;
 
@@ -159,6 +160,12 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
   Color _setIconColor()
   {
     return taskManager.currentTask.iconColor;
+  }
+
+  String format(DateTime element)
+  {
+    return '${element.month.toString()}-${element.day}-${element.year.toString()} ${element.hour}:${element.minute}:${element.second.toString()}';
+
   }
 
   @override
@@ -339,41 +346,112 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
                 child: AlertDialogWidget(),
               ),
             ],),
-            /*ListView.builder(
-                padding: const EdgeInsets.only(right: 20),
-                shrinkWrap: true,
-                itemCount: taskManager.currentTask.log.length,
-                itemBuilder: (BuildContext context, int index)
-                {
-                  return Container(
-                      height: 50,
-                      padding: const EdgeInsets.all(10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-
-                          Text(
-                            'Date: ${taskManager.currentTask.log[index]}',
-                            //tyle: Theme.of(context).textTheme.headline5,
-                          ),
-                        ],
-                      )
-                  );
-                }
-            ),*/
-
             TextButton.icon(onPressed: _setButtonText,
                 icon: RotatedBox(quarterTurns: 1, child: Icon(Icons.compare_arrows),),
-            label: Text(buttonText)),
-            //child: Text()),
+                label: Text(buttonText)),
+            SingleChildScrollView(
+              physics: ScrollPhysics(),
+              child: ListView.builder(
+                  reverse: isAscending,
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: taskManager.currentTask.record.length,
+                  itemBuilder: (BuildContext context, int index){
+                    return ListTile(
+                      title: Text(taskManager.currentTask.record[index].note),
+                      subtitle: Text(format(taskManager.currentTask.record[index].time)),
+                      //isThreeLine: true,
+                      /*Container(
+                        child: Text(format(taskManager.currentTask.record[index].time)),
+                      ),*/
+                      trailing: IconButton(
+                        onPressed: () {
+                          //print(index);
+                          //taskManager.currentTask.record.removeWhere((Record currentRecord) => item.current == currentRecord.time),
+                          taskManager.currentTask.record.removeAt(index);
+                          taskManager.Save();
+                          _setCounter();
+                        },
+                        icon: Icon(Icons.delete),
+                      ),
+                    );
+                  }),
+            ),
+            //LogWidget(),
+            /*Scrollbar(
+              child: ListView.builder(
+                  reverse: isAscending,
+                  shrinkWrap: true,
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  itemCount: taskManager.currentTask.record.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: ListTile(
+                          title: Container(
+                            child: Text(taskManager.currentTask.record[index].time
+                                .toString()),
+                          ),
+                        )
+                    );
+                  }
+              ),
+            )*/
+            /*Scrollbar(
+                child: ListView.builder(
+                    padding: const EdgeInsets.only(right: 20),
+                    shrinkWrap: true,
+                    reverse: isAscending,
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    //scrollDirection: A,
+                    itemCount: taskManager.currentTask.record.length,
+                    itemBuilder: (BuildContext context, int index)
+                    {
+                      return ListTile(
+                        title:  Container(
+                            height: 50,
+                            padding: const EdgeInsets.all(10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: <Widget>[
 
-            ExpansionPanelWidget.callback( () =>
+                                Text(
+                                  'Date: ${taskManager.currentTask.record[index].time}',
+                                  //tyle: Theme.of(context).textTheme.headline5,
+                                ),
+                              ],
+                            )
+                        ),
+                        subtitle: Text('${taskManager.currentTask.record[index].note}'),
+                        trailing: Icon(Icons.delete),
+                      );
+                    }
+                ),),*/
+            //child: Text()),
+            /*ListView.builder(itemBuilder: (BuildContext context, int index)
+            {
+              return ListTile(
+                //onTap:  () => {_viewHabit(index)},
+                title: Container(
+                    child: SingleChildScrollView(
+                      child: Row(
+                        children: [],
+                      ),
+                    )
+
+                ),
+                trailing: Icon(Icons.delete),
+              );
+            }
+            )*/
+        /*ExpansionPanelWidget.callback( () =>
                 {
                   _setCounter(),
                   print(_counter)
                 }
-            ),
+            ),*/
           ],
+
         ),
       ),
     );
@@ -470,6 +548,55 @@ List<Item> generateDate() {
   });
   return temp;
 }
+
+class LogWidget extends StatefulWidget{
+  const LogWidget({Key? key}) : super(key: key);
+
+  @override
+  State<LogWidget> createState() => _LogWidgetState();
+
+}
+class _LogWidgetState extends State<LogWidget>
+{
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      physics: ScrollPhysics(),
+      child: Container(
+        child: _buildList(),
+      ),
+    );
+  }
+  @override
+  Widget _buildList() {
+    return ListView.builder(
+        reverse: isAscending,
+        shrinkWrap: true,
+        //physics: const AlwaysScrollableScrollPhysics(),
+        itemCount: taskManager.currentTask.record.length,
+        itemBuilder: (BuildContext context, int index) {
+          return ListTile(
+            title: Container(
+              child: Text(taskManager.currentTask.record[index].time.toString()),
+            ),
+            trailing: IconButton(onPressed: () {
+              print(index.toString());
+            }, icon: Icon(Icons.delete),),
+          );
+          /*SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: ListTile(
+                title: Container(
+                  child: Text(taskManager.currentTask.record[index].time
+                      .toString()),
+                ),
+              )
+          );*/
+        }
+    );
+  }
+
+}
 /// This is the stateful widget that the main application instantiates.
 class ExpansionPanelWidget extends StatefulWidget {
    ExpansionPanelWidget({Key? key}) : super(key: key);
@@ -557,8 +684,93 @@ class _ExpansionPanelWidgetState extends State<ExpansionPanelWidget> {
   }
 }
 
+/// This is the stateful widget that the main application instantiates.
+/*class ExpansionPanelWidget extends StatefulWidget {
+  ExpansionPanelWidget({Key? key}) : super(key: key);
+
+  late void Function() _callback;
+
+  ExpansionPanelWidget.callback(final void Function() callback)
+  {
+    _callback = callback;
+  }
 
 
+  @override
+  State<ExpansionPanelWidget> createState() => _ExpansionPanelWidgetState();
+}
+
+/// This is the private State class that goes with MyStatefulWidget.
+class _ExpansionPanelWidgetState extends State<ExpansionPanelWidget> {
+  final List<Item> _data = generateDate();
+  //_data.
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Container(
+        child: _buildPanel(),
+      ),
+    );
+  }
+
+  Widget _buildPanel() {
+    return ExpansionPanelList(
+      expansionCallback: (int index, bool isExpanded) {
+        setState(() {
+          _data[index].isExpanded = !isExpanded;
+        });
+      },
+      children: _data.map<ExpansionPanel>((Item item) {
+        return ExpansionPanel(
+          canTapOnHeader: true,
+          headerBuilder: (BuildContext context, bool isExpanded) {
+            return
+              Container(
+                //key: ValueKey(item),
+                child: ListTile(
+                  title: Text(item.headerValue),
+                ),
+                /*background: Container(
+                color: Colors.red,
+            ),*/
+                /*onDismissed: (DismissDirection direction) {
+              setState(() {
+                _data.removeWhere((Item currentItem) => item == currentItem);
+                taskManager.currentTask.record.removeWhere((Record currentRecord) => item.current == currentRecord.time);
+                //print('record length'+taskManager.currentTask.record.length.toString());
+                widget._callback();
+              });
+              },*/
+              );
+          },
+          body: ListTile(
+            //leading: Icon(Icons.border_color),
+            title: Text(item.expandedValue),
+            trailing: IconButton(
+              onPressed: () => {
+                _data.removeWhere((Item currentItem) => item == currentItem),
+                taskManager.currentTask.record.removeWhere((Record currentRecord) => item.current == currentRecord.time),
+                taskManager.Save(),
+                widget._callback(),
+                if(taskManager.tasks.isNotEmpty)
+                  {
+                    taskManager.currentTask = taskManager.tasks.last
+                  }
+                else
+                  {
+
+                  }
+              },
+              icon: Icon(Icons.delete),
+
+            ),
+          ),
+          isExpanded: item.isExpanded,);
+      }).toList(),);
+  }
+}
+*/
 /// This is the stateless widget that the main application instantiates.
 class MyStatelessWidget extends StatelessWidget {
   const MyStatelessWidget({Key? key}) : super(key: key);
@@ -748,6 +960,7 @@ class _MyDialogState extends State<MyDialog> {
               //Navigator.pop(context, 'OK');
 
                 //Navigator.push(context, route);
+              taskManager.Save();
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => ViewSinglePage(title: 'View Habit')));
               },

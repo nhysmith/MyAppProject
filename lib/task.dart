@@ -24,7 +24,7 @@ class Task
   void SetData(String _name, String _desc, Color _color, DateTime _created, int _counter, List<Record> _record)
   {
     taskName = _name;
-    description = _name;
+    description = _desc;
     iconColor = _color;
     created = _created;
     counter = _counter;
