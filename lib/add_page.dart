@@ -74,13 +74,13 @@ class _AddPageState extends State<AddPage> {
     task.setIconColor(r, g, b);
     taskManager.tasks.add(task);
     taskManager.Save();
-    print('Habit Name: ' + task.taskName);
+    /*print('Habit Name: ' + task.taskName);
     print('Habit Description: ' + task.description);
 
 
     print('r: ${r}');
     print('g: ${g}');
-    print('b: ${b}');
+    print('b: ${b}');*/
 
     //taskManager.tasks.forEach((element) {print(element.taskName);});
     r = 0;

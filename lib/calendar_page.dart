@@ -136,11 +136,22 @@ class _CalendarPageState extends State<CalendarPage> {
             //List<Object> appointment = LogDataSource(_getLogDataSource()).getVisibleAppointments(dates[0], calendarTimeZone, dates[details.visibleDates.length - 1]);
           },*/
           dataSource: LogDataSource(_getLogDataSource()),
+          appointmentTextStyle: TextStyle(
+            color: Colors.black
+          ),
           monthViewSettings: const MonthViewSettings(
             navigationDirection: MonthNavigationDirection.horizontal,
             appointmentDisplayMode: MonthAppointmentDisplayMode.indicator,
             showAgenda: true,
+            agendaStyle: AgendaStyle(
+              appointmentTextStyle: TextStyle(
+                //color: (this.AgendaStyle().backgroundColor = Colors.black) ? Colors.black : Colors.blue
+              )
+            )
           ),
+          /*scheduleViewSettings: ScheduleViewSettings(
+            appointmentItemHeight: 1000
+          ),*/
           //specialRegions: _getTimeRegions(),
         ),
       ),
