@@ -82,7 +82,7 @@ class _CalendarPageState extends State<CalendarPage> {
             children: [
               Container(
                 height: 65,
-                child: DrawerHeader(
+                child: const DrawerHeader(
                     decoration: BoxDecoration(
                       color: Colors.lightBlue,
                     ),
@@ -164,14 +164,14 @@ List<Log> _getLogDataSource() {
   taskManager.tasks.forEach((element)
   {
     name = element.taskName;
-    print(name);
+    //print(name);
     color = element.iconColor;
     element.record.forEach((element) {
       log.add(Log(name, element.time,element.time,color));
     });
   });
   log.forEach((element) {
-    print(element.eventName);
+    //print(element.eventName);
   });
   //print('here');
   return log;

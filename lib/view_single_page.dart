@@ -44,7 +44,7 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
       taskManager.Save();
       _counter = taskManager.currentTask.record.length;
 
-      print('update habit counter');
+      //print('update habit counter');
 
       temp.add(Item(
           headerValue: '${currentDate.month.toString()}-${currentDate.day}-${currentDate.year.toString()} ${currentDate.hour}:${currentDate.minute}:${currentDate.second.toString()}',
@@ -68,7 +68,7 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
       //_counter++;
       //taskManager.currentTask.counter++;
       taskManager.tasks.removeAt(taskManager.taskIndex);
-      print('deleting habit ');
+      //print('deleting habit ');
     });
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => MyHomePage(title: 'Home')));
@@ -580,7 +580,7 @@ class _LogWidgetState extends State<LogWidget>
               child: Text(taskManager.currentTask.record[index].time.toString()),
             ),
             trailing: IconButton(onPressed: () {
-              print(index.toString());
+              //print(index.toString());
             }, icon: Icon(Icons.delete),),
           );
           /*SingleChildScrollView(

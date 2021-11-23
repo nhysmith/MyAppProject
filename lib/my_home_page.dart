@@ -149,47 +149,52 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
               ),
             ),
-            Container(
-              alignment: Alignment.centerLeft,
-              padding: EdgeInsets.only(left: 25, top: 50),
-              child: Text(
-                'Most Recently Viewed:',
-                style: Theme.of(context).textTheme.headline5,
-              ),
-            ),
-            ListTile(
-              onTap: () => {
-                if(taskManager.tasks.length > 0)
-                  {
-                    Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ViewSinglePage(title: 'View Habit')))
-                  }
-                else
-                {
+            Visibility(
+                visible: (taskManager.tasks.isNotEmpty),
+                child: Container(
+                  alignment: Alignment.centerLeft,
+                  padding: EdgeInsets.only(left: 25, top: 50),
+                  child: Text(
+                    'Most Recently Viewed:',
+                    style: Theme.of(context).textTheme.headline5,
+                  ),
+                ),),
+            Visibility(
+              visible: (taskManager.tasks.isNotEmpty),
+              child: ListTile(
+                  onTap: () => {
+                    if(taskManager.tasks.length > 0)
+                      {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => ViewSinglePage(title: 'View Habit')))
+                      }
+                    else
+                      {
 
-                }
-              },
-              title: Container(
-                height: 50,
-                padding: const EdgeInsets.all(10),
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: <Widget>[
-                      Container(
-                        height: 50,
-                        width: 50,
-                        decoration: BoxDecoration(
-                          color: taskManager.tasks.length > 0 ? taskManager.currentTask.iconColor : color,
-                          shape: BoxShape.circle
-                        ),
+                      }
+                  },
+                  title: Container(
+                    height: 50,
+                    padding: const EdgeInsets.all(10),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: <Widget>[
+                          Container(
+                            height: 50,
+                            width: 50,
+                            decoration: BoxDecoration(
+                                color: taskManager.tasks.length > 0 ? taskManager.currentTask.iconColor : color,
+                                shape: BoxShape.circle
+                            ),
+                          ),
+                          Text(taskManager.tasks.length > 0 ? taskManager.currentTask.taskName : name),
+                        ],
                       ),
-                      Text(taskManager.tasks.length > 0 ? taskManager.currentTask.taskName : name),
-                    ],
+                    ),
                   ),
                 ),
-              ),
-            ),
+            )
             /*SizedBox(height: 35,),
             Container(
               //height: 50,

@@ -28,9 +28,10 @@ class TaskManager
   void Save() async
   {
     String taskListString = jsonEncode(tasks);
-    print(taskListString);
+    //print(taskListString);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('Save', taskListString);
+    //await prefs.setInt('currentTask', taskIndex);
   }
 
   void Load() async
@@ -42,14 +43,14 @@ class TaskManager
 
         var __test = jsonDecode(jsonString) as List;
         List<Task> _test = __test.map((obj) => Task.fromJson(obj)).toList();
-        print(jsonString);
+        //print(jsonString);
         tasks = _test;
         if(tasks.isNotEmpty)
           {
-            setCurrentTask(0);
+            setCurrentTask(tasks.length-1);
           }
         _test.forEach((element) {
-          print(element.taskName);
+          //print(element.taskName);
 
         });
       }
