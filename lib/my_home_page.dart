@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:habittracker_v3/view_all_page.dart';
 import 'package:habittracker_v3/view_single_page.dart';
 
@@ -113,6 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Text(
                 'Habit Keeper',
                 style: Theme.of(context).textTheme.headline4,
+                //style: TextStyle( fontSize: 35, color: taskManager.currentTask != null ? taskManager.currentTask.iconColor : Colors.black),
               ),
             ),
 

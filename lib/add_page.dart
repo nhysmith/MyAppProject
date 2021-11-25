@@ -182,7 +182,7 @@ class _AddPageState extends State<AddPage> {
                 },
                 decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
-                    labelText: 'Task Name'
+                    labelText: 'Habit Name'
                 ),
               ),
             ),

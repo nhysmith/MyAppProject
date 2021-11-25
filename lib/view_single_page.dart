@@ -162,11 +162,21 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
     return taskManager.currentTask.iconColor;
   }
 
-  String format(DateTime element)
+  String formatDate(DateTime element)
   {
-    return '${element.month.toString()}-${element.day}-${element.year.toString()} ${element.hour}:${element.minute}:${element.second.toString()}';
+    String timeStamp;
+    if(element.hour >= 12)
+    {
+      timeStamp = 'PM';
+    }
+    else
+    {
+      timeStamp = 'AM';
+    }
+    return '${element.month.toString()}-${element.day}-${element.year.toString()} ${element.hour}:${element.minute}:${element.second.toString()} ' + timeStamp;
 
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -283,11 +293,12 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
                   //print('Habit Name: $name');
                   taskManager.currentTask.taskName = name;
                   _setName();
+                  //taskManager.Save();
                 },
                 initialValue: taskManager.currentTask.taskName,
                 decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
-                    labelText: 'Task Name',
+                    labelText: 'Habit Name',
                 ),
               ),
             ),
@@ -301,6 +312,7 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
                   //print('Habit Name: $name');
                   taskManager.currentTask.description = description;
                   _setDescription();
+                  //taskManager.Save();
                 },
                 initialValue: taskManager.currentTask.description,
                 decoration: const InputDecoration(
@@ -346,9 +358,12 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
                 child: AlertDialogWidget(),
               ),
             ],),
-            TextButton.icon(onPressed: _setButtonText,
-                icon: RotatedBox(quarterTurns: 1, child: Icon(Icons.compare_arrows),),
-                label: Text(buttonText)),
+            Visibility(
+              visible: taskManager.currentTask.record.isNotEmpty,
+              child: TextButton.icon(onPressed: _setButtonText,
+                  icon: RotatedBox(quarterTurns: 1, child: Icon(Icons.compare_arrows),),
+                  label: Text(buttonText)),
+            ),
             SingleChildScrollView(
               physics: ScrollPhysics(),
               child: ListView.builder(
@@ -359,7 +374,7 @@ class _ViewSinglePageState extends State<ViewSinglePage> {
                   itemBuilder: (BuildContext context, int index){
                     return ListTile(
                       title: Text(taskManager.currentTask.record[index].note),
-                      subtitle: Text(format(taskManager.currentTask.record[index].time)),
+                      subtitle: Text(formatDate(taskManager.currentTask.record[index].time)),
                       //isThreeLine: true,
                       /*Container(
                         child: Text(format(taskManager.currentTask.record[index].time)),
